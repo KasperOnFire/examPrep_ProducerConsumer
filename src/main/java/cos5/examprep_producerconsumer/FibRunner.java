@@ -1,5 +1,6 @@
 package cos5.examprep_producerconsumer;
 
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -22,7 +23,8 @@ public class FibRunner {
         The producer/Consumer problem is that sometime you might have a thread waiting for objects, since one side may be faster than the other. This is solved in
         java by making a queue of objects, here a BlockingQueue, that the producers can add items to, and the consumers can take items from.
       
-        
+        i had trouble making the program terminate, since the hiunts say to use put() and take() on s2. But if my consumer has take() it never ends,
+        since it will wait until an object appears. I changed that to poll() with a 3 second timeout, to give the producerthreads a chance to finish.
          */
         BlockingQueue s1 = new ArrayBlockingQueue(12);
         s1.add(4L);
@@ -38,7 +40,7 @@ public class FibRunner {
         s1.add(42L);
 
         BlockingQueue s2 = new ArrayBlockingQueue(12);
-        runThreads(4, s1, s2);
+        runThreads(6, s1, s2);
 
     }
 
@@ -50,7 +52,7 @@ public class FibRunner {
             }
             es.execute(new FibConsumer(s2));
             es.shutdown();
-            es.awaitTermination(3, TimeUnit.SECONDS);
+            es.awaitTermination(5, TimeUnit.SECONDS);
             System.out.println("Closing Down");
         } catch (InterruptedException ex) {
             Logger.getLogger(FibRunner.class.getName()).log(Level.SEVERE, null, ex);

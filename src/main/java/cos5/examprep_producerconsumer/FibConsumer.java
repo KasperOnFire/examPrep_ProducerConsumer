@@ -1,6 +1,7 @@
 package cos5.examprep_producerconsumer;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +19,7 @@ public class FibConsumer implements Runnable {
         int sumTotal = 0;
         while (moreNumbers) {
             try {
-                Object o = s2.take();
+                Object o = s2.poll(3, TimeUnit.SECONDS);
                 if (o == null) {
                     moreNumbers = false;
                 } else {
